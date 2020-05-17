@@ -1,0 +1,6 @@
+##
+##  live-relay-cfg.txt -- Authentication & Authorization
+##
+
+example-XXXX-XXXX
+

@@ -1,0 +1,12 @@
+##
+##  mosquitto-acl.txt -- Access Control List
+##
+
+topic   read      $SYS/#
+
+user    admin
+topic   readwrite #
+
+pattern write     $SYS/broker/connection/%c/state
+pattern readwrite %u/#
+

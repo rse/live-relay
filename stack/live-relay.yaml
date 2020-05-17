@@ -1,0 +1,75 @@
+
+version: "3.7"
+
+services:
+
+    #   LiVE Relay: Event Stream (Service)
+    #   MQTTS (MQTT-over-TLS-over-TCP-over-IP)
+    live-relay-es-service:
+        container_name: live-relay-es-service
+        image:          engelschall/live-relay-es-service:0.9.0-20200517
+        init:           true
+        restart:        always
+        volumes:
+            - ./live-relay-es-service.conf:/app/etc/mosquitto.conf:ro
+            - ./live-relay-es-acl.txt:/app/etc/mosquitto-acl.txt:ro
+            - ./live-relay-es-passwd.txt:/app/etc/mosquitto-passwd.txt:ro
+            - ./live-relay-es-tls-ca.crt:/app/etc/mosquitto-tls.chn:ro
+            - ./live-relay-es-tls-sv.crt:/app/etc/mosquitto-tls.crt:ro
+            - ./live-relay-es-tls-sv.key:/app/etc/mosquitto-tls.key:ro
+        ports:
+            - "8883:8883"
+
+    #   LiVE Relay: Video Stream (Gateway)
+    #   RTMPS (RTMP-over-TLS-over-TCP-over-IP)
+    live-relay-vs-gateway:
+        container_name: live-relay-vs-gateway
+        image:          engelschall/live-relay-vs-gateway:0.9.0-20200517
+        init:           true
+        restart:        always
+        environment:
+            - STUNNEL_SERVICE=rtmps
+            - STUNNEL_ACCEPT=0.0.0.0:443
+            - STUNNEL_CONNECT=service:1935
+        volumes:
+            - ./live-relay-vs-tls-sv.key:/etc/stunnel/stunnel.key:ro
+            - ./live-relay-vs-tls-sv.chn:/etc/stunnel/stunnel.pem:ro
+        ports:
+            - "443:443"
+        networks:
+            live-relay-vs: { aliases: [ gateway ] }
+        depends_on:
+            - live-relay-vs-service
+
+    #   LiVE Relay: Video Stream (Service)
+    #   RTMP (RTMP-over-TCP-over-IP)
+    live-relay-vs-service:
+        container_name: live-relay-vs-service
+        image:          engelschall/live-relay-vs-service:0.9.0-20200517
+        init:           true
+        restart:        always
+        volumes:
+            - ./live-relay-vs-service.conf:/usr/local/live-relay-srs/conf/live-relay-srs.conf
+        networks:
+            live-relay-vs: { aliases: [ service ] }
+        depends_on:
+            - live-relay-vs-auth
+
+    #   LiVE Relay: Video Stream (Auth)
+    #   WebHooks (HTTP-over-TCP-over-IP)
+    live-relay-vs-auth:
+        container_name: live-relay-srs-auth
+        image:          engelschall/live-relay-srs-auth:0.9.0-20200517
+        init:           true
+        restart:        always
+        volumes:
+            - ./live-relay-vs-auth.yaml:/app/service.yaml:ro
+        networks:
+            live-relay-vs: { aliases: [ auth ] }
+
+networks:
+
+    live-relay-vs:
+        name: live-relay-srs
+        driver: bridge
+

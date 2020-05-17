@@ -1,0 +1,13 @@
+{
+    "name":                           "service",
+    "version":                        "0.0.0",
+    "homepage":                       "",
+    "description":                    "SRS Auth Service",
+    "main":                           "server.js",
+    "dependencies": {
+        "@hapi/hapi":                 "19.1.1",
+        "@hapi/boom":                 "9.1.0",
+        "js-yaml":                    "3.13.1",
+        "micromatch":                 "4.0.2"
+    }
+}
