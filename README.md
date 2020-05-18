@@ -37,8 +37,8 @@ consisting of three particular components:
   It is primarily based on the Open Source software components
   [Electron](https://www.electronjs.org/) and [FFMpeg](https://ffmpeg.org/).
 
-License
--------
+Copyright & License
+-------------------
 
 Live Video Experience (LiVE)<br/>
 Copyright &copy; 2020 [Dr. Ralf S. Engelschall](mailto:rse@engelschall.com)<br/>
