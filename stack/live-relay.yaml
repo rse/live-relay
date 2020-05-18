@@ -18,7 +18,7 @@ services:
             - ./live-relay-es-tls-sv.crt:/app/etc/mosquitto-tls.crt:ro
             - ./live-relay-es-tls-sv.key:/app/etc/mosquitto-tls.key:ro
         ports:
-            - "8883:8883"
+            - "${LIVE_RELAY_PORT_MQTTS}:8883"
 
     #   LiVE Relay: Video Stream (Gateway)
     #   RTMPS (RTMP-over-TLS-over-TCP-over-IP)
@@ -35,7 +35,7 @@ services:
             - ./live-relay-vs-tls-sv.key:/etc/stunnel/stunnel.key:ro
             - ./live-relay-vs-tls-sv.chn:/etc/stunnel/stunnel.pem:ro
         ports:
-            - "443:443"
+            - "${LIVE_RELAY_PORT_RTMPS}:443"
         networks:
             live-relay-vs: { aliases: [ gateway ] }
         depends_on:
@@ -58,8 +58,8 @@ services:
     #   LiVE Relay: Video Stream (Auth)
     #   WebHooks (HTTP-over-TCP-over-IP)
     live-relay-vs-auth:
-        container_name: live-relay-srs-auth
-        image:          engelschall/live-relay-srs-auth:0.9.0-20200517
+        container_name: live-relay-vs-auth
+        image:          engelschall/live-relay-vs-auth:0.9.0-20200517
         init:           true
         restart:        always
         volumes:

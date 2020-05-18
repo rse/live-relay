@@ -49,7 +49,7 @@ if [ ! -f live-relay-tls-ca.crt ]; then
     cmd="$cmd | cfssl-json -bare ca"
     cmd="$cmd; chown \$UID:\$GID ca.csr ca-key.pem ca.pem"
     docker run --rm -i -v "`pwd`:/pwd" -e UID="`id -u`" -e GID="`id -g`" \
-        engelschall/live-relay-utils sh -c "$cmd"
+        engelschall/live-relay-xx-utils sh -c "$cmd"
     rm -f ca.csr
     mv ca-key.pem live-relay-tls-ca.key
     mv ca.pem     live-relay-tls-ca.crt
@@ -118,7 +118,7 @@ if [ ! -f live-relay-tls-sv.crt ]; then
     cmd="$cmd | cfssl-json -bare server"
     cmd="$cmd; chown \$UID:\$GID server.csr server-key.pem server.pem"
     docker run --rm -i -v "`pwd`:/pwd" -e UID="`id -u`" -e GID="`id -g`" \
-        engelschall/live-relay-utils sh -c "$cmd"
+        engelschall/live-relay-xx-utils sh -c "$cmd"
     rm -f server.csr
     mv server-key.pem live-relay-tls-sv.key
     mv server.pem live-relay-tls-sv.crt
