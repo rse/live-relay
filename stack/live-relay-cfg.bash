@@ -1,4 +1,11 @@
 #!/usr/bin/env bash
+##
+##  Live Video Experience (LiVE)
+##  Copyright (c) 2020 Dr. Ralf S. Engelschall <rse@engelschall.com>
+##  Licensed under GPL 3.0 <https://spdx.org/licenses/GPL-3.0>
+##
+##  live-relay-cfg.bash: Authentication & Authorization
+##
 
 #   read access tokens
 config=()
