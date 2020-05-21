@@ -6,8 +6,8 @@
 ARG         IMAGE_PREFIX=engelschall/
 ARG         IMAGE_NAME=live-relay-vs-service
 ARG         IMAGE_VERSION=0.9.0
-ARG         IMAGE_RELEASE=20200517
+ARG         IMAGE_RELEASE=20200521
 
 #   derive image from a certain base image
-FROM        ossrs/srs:v3.0.134
+FROM        ossrs/srs:v3.0-b4
 
