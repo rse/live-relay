@@ -5,13 +5,13 @@
 #   build arguments (early)
 ARG         IMAGE_PREFIX=engelschall/
 ARG         IMAGE_NAME=live-relay-es-service
-ARG         IMAGE_VERSION=1.0.0
-ARG         IMAGE_RELEASE=20200521
+ARG         IMAGE_VERSION=1.0.1
+ARG         IMAGE_RELEASE=20200609
 
 #   ==== STAGE 1 ====
 
 #   derive image from a certain base image
-FROM        alpine:3.11 AS stage1
+FROM        alpine:3.12 AS stage1
 
 #   add additional build tools
 RUN         apk update && \
@@ -23,7 +23,7 @@ RUN         apk update && \
 WORKDIR     /tmp/build
 
 #   build Mosquitto
-ENV         VERSION_MOSQUITTO=1.6.9
+ENV         VERSION_MOSQUITTO=1.6.10
 RUN         curl -sSkL https://mosquitto.org/files/source/mosquitto-${VERSION_MOSQUITTO}.tar.gz | \
                 tar zxf -
 RUN         cd mosquitto-${VERSION_MOSQUITTO} && \
@@ -47,7 +47,7 @@ RUN         cd mosquitto-${VERSION_MOSQUITTO} && \
 #   ==== STAGE 2 ====
 
 #   derive image from a certain base image
-FROM        golang:1.14.3-alpine3.11 AS stage2
+FROM        golang:1.14.4-alpine3.12 AS stage2
 
 #   add additional build tools
 RUN         apk update && \
@@ -66,7 +66,7 @@ RUN         strip supervisord
 #   ==== STAGE 3 ====
 
 #   derive image from a certain base image
-FROM        alpine:3.11
+FROM        alpine:3.12
 
 #   prepare Alpine
 RUN         apk update && \
