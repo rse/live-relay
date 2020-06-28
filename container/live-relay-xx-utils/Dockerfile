@@ -5,8 +5,8 @@
 #   build arguments (early)
 ARG         IMAGE_PREFIX=engelschall/
 ARG         IMAGE_NAME=live-relay-xx-utils
-ARG         IMAGE_VERSION=1.0.1
-ARG         IMAGE_RELEASE=20200609
+ARG         IMAGE_VERSION=1.0.2
+ARG         IMAGE_RELEASE=20200628
 
 #   derive image from a certain base image
 FROM        golang:1.14.4-alpine3.12 AS stage1
