@@ -2,8 +2,8 @@
 #   container information
 ARG         IMAGE_PREFIX=engelschall/
 ARG         IMAGE_NAME=live-relay-vs-auth
-ARG         IMAGE_VERSION=1.0.1
-ARG         IMAGE_RELEASE=20200609
+ARG         IMAGE_VERSION=1.0.2
+ARG         IMAGE_RELEASE=20200628
 
 #   start with the standard Node.js container image
 FROM        node:14.4-alpine3.12
