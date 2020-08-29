@@ -14,7 +14,7 @@ services:
     #   MQTTS (MQTT-over-TLS-over-TCP-over-IP)
     live-relay-es-service:
         container_name: live-relay-es-service
-        image:          engelschall/live-relay-es-service:1.0.3-20200811
+        image:          engelschall/live-relay-es-service:1.0.4-20200829
         init:           true
         restart:        always
         volumes:
@@ -31,7 +31,7 @@ services:
     #   RTMPS (RTMP-over-TLS-over-TCP-over-IP)
     live-relay-vs-gateway:
         container_name: live-relay-vs-gateway
-        image:          engelschall/live-relay-vs-gateway:1.0.3-20200811
+        image:          engelschall/live-relay-vs-gateway:1.0.4-20200829
         init:           true
         restart:        always
         environment:
@@ -52,7 +52,7 @@ services:
     #   RTMP (RTMP-over-TCP-over-IP)
     live-relay-vs-service:
         container_name: live-relay-vs-service
-        image:          engelschall/live-relay-vs-service:1.0.3-20200811
+        image:          engelschall/live-relay-vs-service:1.0.4-20200829
         init:           true
         restart:        always
         volumes:
@@ -66,7 +66,7 @@ services:
     #   WebHooks (HTTP-over-TCP-over-IP)
     live-relay-vs-auth:
         container_name: live-relay-vs-auth
-        image:          engelschall/live-relay-vs-auth:1.0.3-20200811
+        image:          engelschall/live-relay-vs-auth:1.0.4-20200829
         init:           true
         restart:        always
         volumes:

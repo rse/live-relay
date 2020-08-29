@@ -5,8 +5,8 @@
 #   build arguments (early)
 ARG         IMAGE_PREFIX=engelschall/
 ARG         IMAGE_NAME=live-relay-es-service
-ARG         IMAGE_VERSION=1.0.3
-ARG         IMAGE_RELEASE=20200811
+ARG         IMAGE_VERSION=1.0.4
+ARG         IMAGE_RELEASE=20200829
 
 #   ==== STAGE 1 ====
 
@@ -23,7 +23,7 @@ RUN         apk update && \
 WORKDIR     /tmp/build
 
 #   build Mosquitto
-ENV         VERSION_MOSQUITTO=1.6.11
+ENV         VERSION_MOSQUITTO=1.6.12
 RUN         curl -sSkL https://mosquitto.org/files/source/mosquitto-${VERSION_MOSQUITTO}.tar.gz | \
                 tar zxf -
 RUN         cd mosquitto-${VERSION_MOSQUITTO} && \

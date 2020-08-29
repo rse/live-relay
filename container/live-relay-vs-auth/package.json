@@ -5,7 +5,7 @@
     "description":                    "SRS Auth Service",
     "main":                           "server.js",
     "dependencies": {
-        "@hapi/hapi":                 "19.1.1",
+        "@hapi/hapi":                 "20.0.0",
         "@hapi/boom":                 "9.1.0",
         "js-yaml":                    "3.14.0",
         "micromatch":                 "4.0.2"
