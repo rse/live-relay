@@ -5,8 +5,8 @@
 #   build arguments (early)
 ARG         IMAGE_PREFIX=engelschall/
 ARG         IMAGE_NAME=live-relay-es-service
-ARG         IMAGE_VERSION=1.0.4
-ARG         IMAGE_RELEASE=20200829
+ARG         IMAGE_VERSION=1.0.5
+ARG         IMAGE_RELEASE=20201102
 
 #   ==== STAGE 1 ====
 
