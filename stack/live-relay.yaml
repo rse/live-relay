@@ -56,7 +56,7 @@ services:
         init:           true
         restart:        always
         volumes:
-            - ./live-relay-vs-service.conf:/usr/local/live-relay-srs/conf/live-relay-srs.conf
+            - ./live-relay-vs-service.conf:/usr/local/srs/conf/srs.conf
         networks:
             live-relay-vs: { aliases: [ service ] }
         depends_on:

@@ -49,6 +49,13 @@ done
 (   echo "##"
     echo "##  srs-auth.yaml -- SRS Authentication Service Configuration"
     echo "##"
+    echo ""
+    echo "-   ip:     \"127.0.0.1\""
+    echo "    app:    \"*\""
+    echo "    stream: \"*\""
+    echo "    keys:"
+    echo "        -   \"*\""
+    echo ""
     for line in ${config[*]}; do
         stream=`echo "$line" | sed -e 's;-.*$;;'`
         username=`echo "$line" | sed -e 's;^[^-]*-;;' -e 's;-.*$;;'`
