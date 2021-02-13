@@ -5,11 +5,11 @@
 #   build arguments (early)
 ARG         IMAGE_PREFIX=engelschall/
 ARG         IMAGE_NAME=live-relay-xx-utils
-ARG         IMAGE_VERSION=1.0.5
-ARG         IMAGE_RELEASE=20201102
+ARG         IMAGE_VERSION=1.0.6
+ARG         IMAGE_RELEASE=20210213
 
 #   derive image from a certain base image
-FROM        golang:1.14.7-alpine3.12 AS stage1
+FROM        golang:1.15.8-alpine3.13 AS stage1
 
 #   add additional build tools
 RUN         apk update && \
@@ -30,7 +30,7 @@ RUN         strip cfssl-json
 #   ==== STAGE 2 ====
 
 #   derive image from a certain base image
-FROM        alpine:3.12
+FROM        alpine:3.13
 
 #   prepare Alpine
 RUN         apk update && \
