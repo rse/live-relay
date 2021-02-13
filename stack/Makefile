@@ -1,22 +1,26 @@
 
+LIVE_RELAY_HOST_CERT  = issue
 LIVE_RELAY_HOST_FQDN  = live.example.com
+LIVE_RELAY_HOST_EMAIL = live@example.com
 LIVE_RELAY_PORT_RTMPS = 443
 LIVE_RELAY_PORT_MQTTS = 8883
 
 all: down configure up
 
 configure:
-	bash live-relay-tls.bash make $(LIVE_RELAY_HOST_FQDN)
+	bash live-relay-tls.bash $(LIVE_RELAY_HOST_CERT) $(LIVE_RELAY_HOST_FQDN) $(LIVE_RELAY_HOST_EMAIL)
 	bash live-relay-cfg.bash
 
 down:
 	LIVE_RELAY_HOST_FQDN=$(LIVE_RELAY_HOST_FQDN) \
+	LIVE_RELAY_HOST_EMAIL=$(LIVE_RELAY_HOST_EMAIL) \
 	LIVE_RELAY_PORT_RTMPS=$(LIVE_RELAY_PORT_RTMPS) \
 	LIVE_RELAY_PORT_MQTTS=$(LIVE_RELAY_PORT_MQTTS) \
 	docker-compose -f live-relay.yaml down --remove-orphans
 
 up:
 	LIVE_RELAY_HOST_FQDN=$(LIVE_RELAY_HOST_FQDN) \
+	LIVE_RELAY_HOST_EMAIL=$(LIVE_RELAY_HOST_EMAIL) \
 	LIVE_RELAY_PORT_RTMPS=$(LIVE_RELAY_PORT_RTMPS) \
 	LIVE_RELAY_PORT_MQTTS=$(LIVE_RELAY_PORT_MQTTS) \
 	docker-compose -f live-relay.yaml up -d
