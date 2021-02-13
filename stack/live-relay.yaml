@@ -61,6 +61,8 @@ services:
             live-relay-vs: { aliases: [ service ] }
         depends_on:
             - live-relay-vs-auth
+        ports:
+            - 1935:1935
 
     #   LiVE Relay: Video Stream (Auth)
     #   WebHooks (HTTP-over-TCP-over-IP)
