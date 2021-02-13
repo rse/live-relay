@@ -77,6 +77,6 @@ services:
 networks:
 
     live-relay-vs:
-        name: live-relay-srs
+        name: live-relay-vs
         driver: bridge
 
