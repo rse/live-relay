@@ -5,11 +5,11 @@
 #   build arguments (early)
 ARG         IMAGE_PREFIX=engelschall/
 ARG         IMAGE_NAME=live-relay-xx-utils
-ARG         IMAGE_VERSION=1.0.6
-ARG         IMAGE_RELEASE=20210213
+ARG         IMAGE_VERSION=1.0.7
+ARG         IMAGE_RELEASE=20210522
 
 #   derive image from a certain base image
-FROM        golang:1.15.8-alpine3.13 AS stage1
+FROM        golang:1.16.4-alpine3.13 AS stage1
 
 #   add additional build tools
 RUN         apk update && \
@@ -21,9 +21,11 @@ ENV         GOPATH=/tmp/build
 WORKDIR     /tmp/build
 
 #   build CFSSL
-RUN         go get -v -d -u github.com/cloudflare/cfssl/...
-RUN         go build -v -o cfssl github.com/cloudflare/cfssl/cmd/cfssl/
-RUN         go build -v -o cfssl-json github.com/cloudflare/cfssl/cmd/cfssljson/
+RUN         git clone --depth 1 https://github.com/cloudflare/cfssl \
+                $GOPATH/src/github.com/cloudflare/cfssl
+RUN         (   cd $GOPATH/src/github.com/cloudflare/cfssl && \
+                go build -v -o /tmp/build/cfssl cmd/cfssl/cfssl.go && \
+                go build -v -o /tmp/build/cfssl-json cmd/cfssljson/cfssljson.go )
 RUN         strip cfssl
 RUN         strip cfssl-json
 

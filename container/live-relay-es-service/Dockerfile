@@ -5,8 +5,8 @@
 #   build arguments (early)
 ARG         IMAGE_PREFIX=engelschall/
 ARG         IMAGE_NAME=live-relay-es-service
-ARG         IMAGE_VERSION=1.0.6
-ARG         IMAGE_RELEASE=20210213
+ARG         IMAGE_VERSION=1.0.7
+ARG         IMAGE_RELEASE=20210522
 
 #   ==== STAGE 1 ====
 
@@ -17,13 +17,51 @@ FROM        alpine:3.13 AS stage1
 RUN         apk update && \
             apk upgrade && \
             apk add curl binutils gcc g++ cmake make libxslt && \
-            apk add musl-dev openssl-dev c-ares-dev libwebsockets-dev libwebsockets-evlib_uv uthash-dev cjson-dev
+            apk add musl-dev openssl-dev c-ares-dev uthash-dev zlib-dev linux-headers
 
 #   create build environment
 WORKDIR     /tmp/build
 
+#   build cJSON
+ENV         VERSION_CJSON=1.7.14
+RUN         curl -sSkL https://github.com/DaveGamble/cJSON/archive/refs/tags/v${VERSION_CJSON}.tar.gz | \
+                tar zxf -
+RUN         cd cJSON-${VERSION_CJSON} && \
+            cmake \
+                -DCMAKE_BUILD_TYPE="Release" \
+                -DCMAKE_INSTALL_PREFIX="/app" \
+                -DCMAKE_C_FLAGS="-Wno-deprecated-declarations" \
+                -DBUILD_SHARED_LIBS=OFF \
+                . && \
+            make && \
+            make install
+
+#   build libwebsockets
+ENV         VERSION_LIBWEBSOCKETS=4.2.0
+RUN         curl -sSkL https://github.com/warmcat/libwebsockets/archive/v${VERSION_LIBWEBSOCKETS}.tar.gz | \
+                tar zxf -
+RUN         cd libwebsockets-${VERSION_LIBWEBSOCKETS} && \
+            cmake \
+                -DCMAKE_BUILD_TYPE="Release" \
+                -DCMAKE_INSTALL_PREFIX="/app" \
+                -DCMAKE_C_FLAGS="-Wno-deprecated-declarations" \
+                -DBUILD_SHARED_LIBS=OFF \
+                -DLWS_WITH_SHARED=OFF \
+                -DLWS_WITH_STATIC=ON \
+                -DLWS_WITH_SSL=ON \
+                -DLWS_WITH_ZLIB=ON \
+                -DLWS_WITH_HTTP2=ON \
+                -DLWS_WITH_LIBEV=OFF \
+                -DLWS_WITH_LIBUV=OFF \
+                -DLWS_WITH_EXTERNAL_POLL=ON \
+                -DLWS_WITHOUT_TESTAPPS=ON \
+                -DDISABLE_WERROR=ON \
+                . && \
+            make && \
+            make install
+
 #   build Mosquitto
-ENV         VERSION_MOSQUITTO=2.0.7
+ENV         VERSION_MOSQUITTO=2.0.10
 RUN         curl -sSkL https://mosquitto.org/files/source/mosquitto-${VERSION_MOSQUITTO}.tar.gz | \
                 tar zxf -
 RUN         cd mosquitto-${VERSION_MOSQUITTO} && \
@@ -47,7 +85,7 @@ RUN         cd mosquitto-${VERSION_MOSQUITTO} && \
 #   ==== STAGE 2 ====
 
 #   derive image from a certain base image
-FROM        golang:1.15.8-alpine3.12 AS stage2
+FROM        golang:1.16.4-alpine3.13 AS stage2
 
 #   add additional build tools
 RUN         apk update && \
@@ -59,8 +97,11 @@ ENV         GOPATH=/tmp/build
 WORKDIR     /tmp/build
 
 #   build SupervisorD
-RUN         go get -v -d github.com/ochinchina/supervisord
-RUN         go build -v -o supervisord github.com/ochinchina/supervisord
+RUN         git clone --depth 1 https://github.com/ochinchina/supervisord \
+                $GOPATH/src/github.com/ochinchina/supervisord
+RUN         (   cd $GOPATH/src/github.com/ochinchina/supervisord && \
+                go get -v -d && \
+                go build -v -o /tmp/build/supervisord )
 RUN         strip supervisord
 
 #   ==== STAGE 3 ====
